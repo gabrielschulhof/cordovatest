@@ -1,0 +1,14 @@
+{
+	"name": "cordovatest",
+	"version": "0.0.1",
+	"description": "Cordova API Test app",
+	"main": "cordovatest",
+	"engines": {
+		"node": ">=0.9.9"
+	},
+	"engineStrict": true,
+	"dependencies": {
+		"cordova": "git+https://github.com/gabrielschulhof/cordova-cli.git#tizen"
+	},
+	"author": "Gabriel Schulhof"
+}
