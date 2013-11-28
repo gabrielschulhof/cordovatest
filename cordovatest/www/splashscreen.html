@@ -1,0 +1,36 @@
+<!doctype html>
+<html class="ui-mobile">
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="lib/jquery.mobile.min.css" />
+	<style>
+body {
+	padding: 0;
+	margin: 0;
+}
+.ui-page {
+	height: 100%;
+	text-align: center;
+}
+.container {
+	display: inline-block;
+	min-height: 9em;
+	max-height: 9em;
+	min-width: 16em;
+	max-width: 16em;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin-top: -4.5em;
+	margin-left: -8em;
+}
+	</style>
+</head>
+<body>
+	<div class="ui-page-theme-a ui-page ui-page-active">
+		<div class="container">
+			<h1>Splash screen!</h1>
+			<a href="#" onclick="window.opener.navigator.splashscreen.hide();" class="ui-btn ui-btn-inline ui-corner-all">Hide</a>
+		</div>
+</body>
+</html>

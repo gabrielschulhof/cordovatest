@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.example.cordovatest" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0" xmlns:tizen="http://tizen.org/ns/widgets">
+    <name>Test Cordova</name>
+    <description>
+        A sample Apache Cordova application that responds to the deviceready event.
+    </description>
+    <author email="dev@callback.apache.org" href="http://cordova.io">
+        Apache Cordova Team
+    </author>
+    <content src="index.html" />
+    <access origin="*" />
+    <preference name="fullscreen" value="true" />
+    <preference name="webviewbounce" value="true" />
+    <tizen:application id="pl6hbya6oc.cordovatest" package="pl6hbya6oc" required_version="2.2" />
+    <tizen:setting background-support="disable" context-menu="enable" encryption="disable" hwkey-event="enable" install-location="auto" screen-orientation="auto-rotation" />
+</widget>
