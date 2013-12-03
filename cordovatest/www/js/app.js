@@ -90,4 +90,22 @@ pagecreateHandlers[ "splash-page" ] = function( page ) {
 	});
 };
 
+pagecreateHandlers[ "contacts-page" ] = function( page ) {
+	var contactList = $( "#contact-list" );
+	deviceReadyDeferred.done( function() {
+		navigator.contacts.find( [ "*" ],
+			function( contacts ) {
+				var idx;
+
+				for ( idx in contacts ) {
+					contactList.append( "<li><a href='#'>" + contacts[ idx ].displayName + "</a></li>" );
+				}
+				contactList.listview( "refresh" );
+			}),
+			function( error ) {
+				contactList.before( "<p class='warning'>Failed to retrieve contacts: " + error + "</p>" );
+			}
+	});
+};
+
 })( jQuery );
