@@ -31,8 +31,12 @@
 </head>
 <body>
 	<div data-role="page" id="home-page">
-		<div data-role="panel" class="nav-panel" data-display="overlay" id="home-page-panel">
-			<p class="waiting">Detecting available cordova plugins...</p>
+		<div data-role="panel" data-display="overlay" id="home-page-panel">
+			<ul class="nav-list" data-role="listview">
+				<li data-icon="home"><a href="index.html">Home</a></li>
+				<li class="waiting">Detecting cordova plugins...</li>
+				<li data-icon="delete"><a href="#" id="exit-app">Exit</a></li>
+			</ul>
 		</div>
 		<div data-role="header">
 			<a href="#home-page-panel" class="ui-btn ui-icon-bars ui-btn-icon-notext ui-btn-inline ui-corner-all">Tests</a>

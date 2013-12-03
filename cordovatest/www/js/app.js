@@ -6,32 +6,31 @@ var deviceReadyDeferred = $.Deferred();
 	navList = null,
 	// Create nav list based on detected cordova features and store it in navList
 	createNavList = function() {
-		if ( !navList ) {
-			navList = $( "<ul>" );
-			navList.append( "<li><a href='index.html' data-icon='home'>Home</li></a>" );
+		if ( navList === null ) {
+			navList = "";
 			if ( "device" in window ) {
-				navList.append( "<li><a href='device.html'>Device</li></a>" );
+				navList += "<li><a href='device.html'>Device</li></a>";
 			}
 			if ( "splashscreen" in navigator ) {
-				navList.append( "<li><a href='splash.html'>Splashscreen</li></a>" );
+				navList += "<li><a href='splash.html'>Splashscreen</li></a>";
 			}
 			if ( "camera" in navigator ) {
-				navList.append( "<li><a href='camera.html'>Camera</li></a>" );
+				navList += "<li><a href='camera.html'>Camera</li></a>";
 			}
 			if ( "contacts" in navigator ) {
-				navList.append( "<li><a href='contacts.html'>Contacts</li></a>" );
+				navList += "<li><a href='contacts.html'>Contacts</li></a>";
 			}
 			if ( "geolocation" in navigator ) {
-				navList.append( "<li><a href='geolocation.html'>Geolocation</li></a>" );
+				navList += "<li><a href='geolocation.html'>Geolocation</li></a>";
 			}
 		}
 		return navList;
-	},
-	addNavList = function( parent ) {
-		createNavList().clone().appendTo( parent ).listview();
 	};
 
 $.mobile.document
+	.one( "click", "#exit-app", function() {
+		tizen.application.getCurrentApplication().exit();
+	})
 	.one( "deviceready", function() {
 		deviceReadyDeferred.resolve();
 	})
@@ -48,14 +47,22 @@ $.mobile.document
 		}
 
 		deviceReadyDeferred.done( function() {
-			// Fill in the navigation panel and remove class so we never find it agains
-			var panel = $( ".nav-panel", page ).removeClass( "nav-panel" );
-
-			// Remove cordova launcher buttton from the page
+			// Remove cordova launcher button from the page and replace it with an exit button
 			$( ".cordova-launcher", page ).remove();
 
+			// Fill in the navigation panel and remove class so we never find it again
 			// the navigation list will replace the waiting message
-			addNavList( panel.find( ".waiting" ).parent().empty() );
+			$( ".nav-list", page )
+				.removeClass( "nav-list" )
+					.children( ".waiting" )
+						.remove()
+					.end()
+					.children()
+						.first()
+							.after( createNavList() )
+						.end()
+					.end()
+				.listview( "refresh" );
 		});
 	});
 
