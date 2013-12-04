@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+ <head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cordova Contacts API</title>
+  <link rel="stylesheet" href="lib/jquery.mobile.min.css" />
+  <link rel="stylesheet" href="css/index.css" />
+  <script src="cordova.js"></script>
+  <script src="lib/jquery-1.10.1.min.js"></script>
+  <script src="lib/jquery.mobile.js"></script>
+  <script src="js/app.js"></script>
+ </head>
+ <body>
+  <div data-role="page" id="contacts-edit">
+   <div data-role="panel" class="nav-panel" data-display="overlay" id="contacts-page-panel">
+			<ul class="nav-list" data-role="listview">
+				<li data-icon="home"><a href="index.html">Home</a></li>
+				<li class="waiting">Detecting cordova plugins...</li>
+				<li data-icon="delete"><a href="#" id="exit-app">Exit</a></li>
+			</ul>
+   </div>
+   <div data-role="header" data-position="fixed">
+    <a href="#contacts-page-panel" class="ui-btn ui-icon-bars ui-btn-icon-notext ui-btn-inline ui-corner-all">Tests</a>
+    <h1></h1>
+    <a href="#" class="cordova-launcher ui-btn ui-icon-gear ui-btn-icon-right ui-btn-inline ui-corner-all">Launch Cordova</a>
+   </div>
+   <div class="ui-content">
+	 	<form>
+			<ul data-role="listview" class="ui-listview-outer">
+				<li data-role="collapsible" data-iconpos="right" data-shadow="false" data-corners="false">
+					<h2>Name</h2>
+						<div class="ui-field-contain">
+							<label for="formatted">Formatted:</label>
+							<input type="text" id="formatted"></input>
+						</div>
+						<div class="ui-field-contain">
+							<label for="familyName">Family name:</label>
+							<input type="text" id="familyName"></input>
+						</div>
+						<div class="ui-field-contain">
+							<label for="givenName">Given name:</label>
+							<input type="text" id="givenName"></input>
+						</div>
+						<div class="ui-field-contain">
+							<label for="middleName">Middle name:</label>
+							<input type="text" id="middleName"></input>
+						</div>
+						<div class="ui-field-contain">
+							<label for="honorificPrefix">Honorific prefix:</label>
+							<input type="text" id="honorificPrefix"></input>
+						</div>
+						<div class="ui-field-contain">
+							<label for="honorificSuffix">Honorific suffix:</label>
+							<input type="text" id="honorificSuffix"></input>
+						</div>
+				</li>
+				<li>
+					<div class="ui-field-contain">
+						<label for="nickname">Nickname:</label>
+						<input type="text" id="nickname"></input>
+					</div>
+				</li>
+				<li data-role="collapsible" data-iconpos="right" data-shadow="false" data-corners="false">
+					<h2>Phone numbers</h2>
+					<ul id="phoneNumbers" data-role="listview" data-shadow="false" data-inset="true" data-corners="false">
+						<li>
+							<div>
+								<a href="#" id="add-phone-number" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-icon-plus ui-btn-icon-right">Add</a>
+							</div>
+						</li>
+					</ul>
+				</li>
+				<li data-role="collapsible" data-iconpos="right" data-shadow="false" data-corners="false">
+					<h2>Emails</h2>
+					<ul id="emails" data-role="listview" data-shadow="false" data-inset="true" data-corners="false">
+						<li>
+							<div>
+								<a href="#" id="add-email" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-icon-plus ui-btn-icon-right">Add</a>
+							</div>
+						</li>
+					</ul>
+				</li>
+				<li data-role="collapsible" data-iconpos="right" data-shadow="false" data-corners="false">
+					<h2>Addresses</h2>
+					<ul id="addresses" data-role="listview" data-shadow="false" data-inset="true" data-corners="false">
+						<li>
+							<div>
+								<a href="#" id="add-address" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-icon-plus ui-btn-icon-right">Add</a>
+							</div>
+						</li>
+					</ul>
+				</li>
+				<li data-role="collapsible" data-iconpos="right" data-shadow="false" data-corners="false">
+					<h2>IMs</h2>
+					<ul id="ims" data-role="listview" data-shadow="false" data-inset="true" data-corners="false">
+						<li>
+							<div>
+								<a href="#" id="add-im" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-icon-plus ui-btn-icon-right">Add</a>
+							</div>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</form>
+   </div>
+  </div>
+ </body>
+</html>
