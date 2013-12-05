@@ -103,8 +103,21 @@ pagecreateHandlers[ "splash-page" ] = function( page ) {
 };
 
 pagecreateHandlers[ "contacts-edit" ] = function( page ) {
-	var itemIndex, addresses, addressPreferredRadioId, id,
+	var itemIndex, addresses, preferredRadioId, id, organizations, photos,
+		localISODate = function( date ) {
+			var returnValue,
+				month = date.getMonth() + 1,
+				day = date.getDate();
+
+			returnValue = date.getFullYear() + "-" +
+				( ( month < 10 ) ? ( "0" + month ) : month ) + "-" +
+				( ( day < 10 ) ? ( "0" + day ) : day );
+
+			return returnValue;
+		},
 		addressesList = $( "#addresses", page ),
+		organizationsList = $( "#organizations", page ),
+		photosList = $( "#photos", page ),
 		contact = page.jqmData( "linkData" ),
 		addContactFieldList = function( list, listview, idPrefix, nameUuid, inputType ) {
 			var itemIndex, id;
@@ -161,7 +174,7 @@ pagecreateHandlers[ "contacts-edit" ] = function( page ) {
 
 		// Addresses
 		addresses = contact.addresses;
-		addressPreferredRadioId = ( idUuid++ );
+		preferredRadioId = ( idUuid++ );
 		for ( itemIndex in addresses ) {
 			id = ( idUuid++ );
 			$( "<li></li>" )
@@ -216,7 +229,7 @@ pagecreateHandlers[ "contacts-edit" ] = function( page ) {
 					.end() )
 				.append( $( "<div class='ui-field-contain'></div>" )
 					.append( $( "<label>Preferred</label>" )
-						.append( $( "<input type='radio' name='address-group-" + addressPreferredRadioId + "'></input>" )
+						.append( $( "<input type='radio' name='address-group-" + preferredRadioId + "'></input>" )
 							.prop( "checked", addresses[ itemIndex ].pref ) ) )
 					.find( "input" )
 						.checkboxradio()
@@ -230,8 +243,70 @@ pagecreateHandlers[ "contacts-edit" ] = function( page ) {
 
 		// IMs
 		addContactFieldList( contact.ims, $( "#ims", page ), "ims-", ( idUuid++ ), "text" );
+
+		// Organizations
+		preferredRadioId = ( idUuid++ );
+		organizations = contact.organizations;
+
+		for ( itemIndex in organizations ) {
+			$( "<li></li>" )
+				.append( $( "<div class='ui-field-contain'></div>" )
+					.append( "<label for='organization-type-" + id + "'>Type</label>" )
+					.append( $( "<input type='text' id='organization-type-" + id + "'></input>" )
+						.val( organizations[ itemIndex ].type ) )
+					.children( "input" )
+						.textinput()
+					.end() )
+				.append( $( "<div class='ui-field-contain'></div>" )
+					.append( "<label for='organization-name-" + id + "'>Name</label>" )
+					.append( $( "<input type='text' id='organization-name-" + id + "'></input>" )
+						.val( organizations[ itemIndex ].name ) )
+					.children( "input" )
+						.textinput()
+					.end() )
+				.append( $( "<div class='ui-field-contain'></div>" )
+					.append( "<label for='organization-department-" + id + "'>Department</label>" )
+					.append( $( "<input type='text' id='organization-department-" + id + "'></input>" )
+						.val( organizations[ itemIndex ].department ) )
+					.children( "input" )
+						.textinput()
+					.end() )
+				.append( $( "<div class='ui-field-contain'></div>" )
+					.append( "<label for='organization-title-" + id + "'>Title</label>" )
+					.append( $( "<input type='text' id='organization-title-" + id + "'></input>" )
+						.val( organizations[ itemIndex ].title ) )
+					.children( "input" )
+						.textinput()
+					.end() )
+				.append( "<div class='ui-field-contain'>" +
+					"<a href='#' data-delete-item='organizations-button' class='ui-btn ui-corner-all ui-shadow ui-icon-delete ui-btn-icon-right'>Delete</a>" +
+					"</div>" )
+				.insertBefore( organizationsList.children().last() );
+		}
+		organizationsList.listview( "refresh" );
+
+		// Birthday
+		$( "#birthday" ).val( localISODate( contact.birthday ) );
+
+		// Note
+		$( "#note" ).val( contact.note );
+
+		// Photos
+		photos = contact.photos;
+		preferredRadioId = ( idUuid++ );
+		for ( itemIndex in photos ) {
+			$( "<li><a href='#'><img src='" + photos[ itemIndex ].value + "' /><p>" + photos[ itemIndex ].value + "</p></a></li>" )
+				.insertBefore( photosList.children().last() );
+		}
+		photosList.listview( "refresh" );
+
+		// Categories
+		addContactFieldList( contact.categories, $( "#categories", page ), "categories-", ( idUuid++ ), "text" );
+
+		// URLs
+		addContactFieldList( contact.urls, $( "#urls", page ), "urls-", ( idUuid++ ), "url" );
 	}
-}
+};
 
 pagecreateHandlers[ "contacts-page" ] = function( page ) {
 	var contactList = $( "#contact-list" );
