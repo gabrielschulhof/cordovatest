@@ -34,7 +34,7 @@ $.mobile.document
 
 		// Transfer link data from the link that opens the page to the page itself
 		if ( data.options && data.options.link ) {
-			linkData = data.options.link.jqmData( "linkData" );
+			linkData = data.options.link.closest( "li" ).jqmData( "linkData" );
 			if ( linkData && data.page ) {
 				data.page.jqmData( "linkData", linkData );
 			}
@@ -115,9 +115,11 @@ pagecreateHandlers[ "contacts-edit" ] = function( page ) {
 
 			return returnValue;
 		},
-		addressesList = $( "#addresses", page ),
-		organizationsList = $( "#organizations", page ),
-		photosList = $( "#photos", page ),
+		ui = {
+			addressesList: $( "#addresses" ),
+			organizationsList: $( "#organizations" ),
+			photosList: $( "#photos" ),
+		},
 		contact = page.jqmData( "linkData" ),
 		addContactFieldList = function( list, listview, idPrefix, nameUuid, inputType ) {
 			var itemIndex, id;
@@ -156,21 +158,52 @@ pagecreateHandlers[ "contacts-edit" ] = function( page ) {
 
 	if ( contact ) {
 
-		// Name
-		$( "h1", page ).text( contact.displayName );
-		$( "#formatted", page ).val( contact.name.formatted );
-		$( "#familyName", page ).val( contact.name.familyName );
-		$( "#givenName", page ).val( contact.name.givenName );
-		$( "#middleName", page ).val( contact.name.middleName );
-		$( "#honorificPrefix", page ).val( contact.name.honorificPrefix );
-		$( "#honorificSuffix", page ).val( contact.name.honorificSuffix );
-		$( "#nickname", page ).val( contact.nickname );
+		$.extend( ui, {
+			// Name
+			displayName: $( "h1", page ).text( contact.displayName ),
+			formatted: $( "#formatted" ).val( contact.name.formatted ),
+			familyName: $( "#familyName" )
+				.val( contact.name.familyName )
+				.on( "change", function() {
+					contact.name.familyName = ui.familyName.val();
+					contact.save();
+				}),
+			givenName: $( "#givenName" )
+				.val( contact.name.givenName )
+				.on( "change", function() {
+					contact.name.givenName = ui.givenName.val();
+					contact.save();
+				}),
+			middleName: $( "#middleName" ).val( contact.name.middleName ),
+			honorificPrefix: $( "#honorificPrefix" ).val( contact.name.honorificPrefix ),
+			honorificSuffix: $( "#honorificSuffix" ).val( contact.name.honorificSuffix ),
+
+			// Nickname
+			nickname: $( "#nickname", page )
+				.val( contact.nickname )
+				.on( "change", function() {
+					contact.nickname = ui.nickname.val();
+					contact.save();
+				}),
+
+			// Birthday
+			birthday: $( "#birthday" ).val( localISODate( contact.birthday ) ),
+
+			// Note
+			note: $( "#note" ).val( contact.note ),
+
+			phoneNumbers: $( "#phoneNumbers" ),
+			emails: $( "#emails" ),
+			ims: $( "#ims" ),
+			categories: $( "#categories" ),
+			urls: $( "#urls" )
+		});
 
 		// Phone numbers
-		addContactFieldList( contact.phoneNumbers, $( "#phoneNumbers", page ), "phoneNumbers-", ( idUuid++ ), "tel" );
+		addContactFieldList( contact.phoneNumbers, ui.phoneNumbers, "phoneNumbers-", ( idUuid++ ), "tel" );
 
 		// Emails
-		addContactFieldList( contact.emails, $( "#emails", page ), "emails-", ( idUuid++ ), "email" );
+		addContactFieldList( contact.emails, ui.emails, "emails-", ( idUuid++ ), "email" );
 
 		// Addresses
 		addresses = contact.addresses;
@@ -237,12 +270,12 @@ pagecreateHandlers[ "contacts-edit" ] = function( page ) {
 				.append( "<div class='ui-field-contain'>" +
 					"<a href='#' data-delete-item='addresses-button' class='ui-btn ui-corner-all ui-shadow ui-icon-delete ui-btn-icon-right'>Delete</a>" +
 					"</div>" )
-				.insertBefore( addressesList.children().last() );
+				.insertBefore( ui.addressesList.children().last() );
 		}
-		addressesList.listview( "refresh" );
+		ui.addressesList.listview( "refresh" );
 
 		// IMs
-		addContactFieldList( contact.ims, $( "#ims", page ), "ims-", ( idUuid++ ), "text" );
+		addContactFieldList( contact.ims, ui.ims, "ims-", ( idUuid++ ), "text" );
 
 		// Organizations
 		preferredRadioId = ( idUuid++ );
@@ -281,35 +314,51 @@ pagecreateHandlers[ "contacts-edit" ] = function( page ) {
 				.append( "<div class='ui-field-contain'>" +
 					"<a href='#' data-delete-item='organizations-button' class='ui-btn ui-corner-all ui-shadow ui-icon-delete ui-btn-icon-right'>Delete</a>" +
 					"</div>" )
-				.insertBefore( organizationsList.children().last() );
+				.insertBefore( ui.organizationsList.children().last() );
 		}
-		organizationsList.listview( "refresh" );
-
-		// Birthday
-		$( "#birthday" ).val( localISODate( contact.birthday ) );
-
-		// Note
-		$( "#note" ).val( contact.note );
+		ui.organizationsList.listview( "refresh" );
 
 		// Photos
 		photos = contact.photos;
 		preferredRadioId = ( idUuid++ );
 		for ( itemIndex in photos ) {
 			$( "<li><a href='#'><img src='" + photos[ itemIndex ].value + "' /><p>" + photos[ itemIndex ].value + "</p></a></li>" )
-				.insertBefore( photosList.children().last() );
+				.insertBefore( ui.photosList.children().last() );
 		}
-		photosList.listview( "refresh" );
+		ui.photosList.listview( "refresh" );
 
 		// Categories
-		addContactFieldList( contact.categories, $( "#categories", page ), "categories-", ( idUuid++ ), "text" );
+		addContactFieldList( contact.categories, ui.categories, "categories-", ( idUuid++ ), "text" );
 
 		// URLs
-		addContactFieldList( contact.urls, $( "#urls", page ), "urls-", ( idUuid++ ), "url" );
+		addContactFieldList( contact.urls, ui.urls, "urls-", ( idUuid++ ), "url" );
 	}
 };
 
+pagecreateHandlers[ "camera-page" ] = function( page ) {
+	deviceReadyDeferred.done( function() {
+		$( "#take-a-picture" ).on( "click", function() {
+			navigator.camera.getPicture( function( result ) {
+				$( this ).after( $( "<img>", { src: result } ) );
+			}, function( error ) {
+				alert( "An error occurred: " + error );
+			}, {
+				sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY,
+				destinationType: navigator.camera.DestinationType.FILE_URL
+			});
+		});
+	});
+};
+
 pagecreateHandlers[ "contacts-page" ] = function( page ) {
-	var contactList = $( "#contact-list" );
+	var contactList = $( "#contact-list" )
+		.on( "click", "li a:last-child", function( event ) {
+			var contact = $( event.target ).closest( "li" ).jqmData( "linkData" );
+
+			if ( contact ) {
+				contact.remove();
+			}
+		});
 	deviceReadyDeferred.done( function() {
 		$( "<a href='#' class='ui-btn ui-corner-all ui-btn-right ui-btn-inline ui-icon-plus ui-btn-icon-notext'>Add Contact</a>" )
 			.appendTo( "#contacts-page-header" )
@@ -321,9 +370,11 @@ pagecreateHandlers[ "contacts-page" ] = function( page ) {
 				var idx;
 
 				for ( idx in contacts ) {
-					contactList.append( $( "<li></li>" )
-						.append( $( "<a href='contacts-edit.html'>" + contacts[ idx ].displayName + "</a>" )
-							.jqmData( "linkData", contacts[ idx ] ) ) );
+					contactList.append( $( "<li>" +
+						"<a href='contacts-edit.html'>" + contacts[ idx ].displayName + "</a>" +
+						"<a href='#' class='ui-icon-delete'></a>" +
+					"</li>" )
+						.jqmData( "linkData", contacts[ idx ] ) );
 				}
 				contactList.listview( "refresh" );
 			}),
