@@ -337,13 +337,16 @@ pagecreateHandlers[ "contacts-edit" ] = function( page ) {
 
 pagecreateHandlers[ "camera-page" ] = function( page ) {
 	deviceReadyDeferred.done( function() {
-		$( "#take-a-picture" ).on( "click", function() {
+		$( "input[name='picture-source']" ).on( "click", function() {
 			navigator.camera.getPicture( function( result ) {
-				$( this ).after( $( "<img>", { src: result } ) );
+				$( "#the-picture" )
+					.toggleClass( "ui-screen-hidden", !result )
+					.attr( "src", result );
 			}, function( error ) {
 				alert( "An error occurred: " + error );
 			}, {
-				sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY,
+				sourceType: navigator.camera.PictureSourceType[
+					$( "#from-library" ).is( ":checked" ) ? "PHOTOLIBRARY" : "CAMERA" ],
 				destinationType: navigator.camera.DestinationType.FILE_URL
 			});
 		});

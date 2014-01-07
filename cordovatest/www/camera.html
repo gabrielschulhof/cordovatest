@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+<head>
+    <meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Test Camera API</title>
+		<link rel="stylesheet" href="lib/jquery.mobile.min.css" />
+		<link rel="stylesheet" href="css/index.css" />
+		<script src="cordova.js"></script>
+		<script src="lib/jquery-1.10.1.js"></script>
+		<script src="lib/jquery.mobile.js"></script>
+		<script src="js/app.js"></script>
+</head>
+<body>
+	<div data-role="page" id="camera-page">
+		<div data-role="panel" data-display="overlay" id="camera-page-panel">
+			<ul class="nav-list" data-role="listview">
+				<li data-icon="home"><a href="index.html">Home</a></li>
+				<li class="waiting">Detecting cordova plugins...</li>
+				<li data-icon="delete"><a href="#" id="exit-app">Exit</a></li>
+			</ul>
+		</div>
+		<div data-role="header" data-position="fixed">
+			<a href="#camera-page-panel" class="ui-btn ui-icon-bars ui-btn-icon-notext ui-btn-inline ui-corner-all">Tests</a>
+			<h1>Test Camera API</h1>
+			<a href="#" class="cordova-launcher ui-btn ui-icon-gear ui-btn-icon-right ui-btn-inline ui-corner-all">Launch Cordova</a>
+		</div>
+		<div class="ui-content">
+			<p>Click one of the buttons below to take a picture from the indicated source.</p>
+			<form action="#">
+				<fieldset data-role="controlgroup" data-type="horizontal">
+					<label>Library<input name="picture-source" type="radio" id="from-library"></label>
+					<label>Camera<input name="picture-source" type="radio" checked></label>
+				</fieldset>
+			</form>
+			<img id="the-picture" class="photo-sample ui-screen-hidden"></img>
+		</div>
+	</div>
+</body>
+</html>

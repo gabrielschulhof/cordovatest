@@ -19,6 +19,10 @@
 	to { background-color: #f2acac; }
 }
 
+.photo-sample {
+	width: 100%;
+}
+
 /* listview with collapsible items */
 /* Basic settings */
 .ui-li-static.ui-collapsible {
